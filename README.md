@@ -8,9 +8,20 @@ To‑Do List (Go + React + TS)
    go install github.com/wailsapp/wails/v2/cmd/wails@latest
    ```
 
-2. **Запусти приложение в режиме разработки:**
+2. **Добавь Wails в PATH (для текущей сессии):**
+   ```sh
+   export PATH=$PATH:$(go env GOPATH)/bin
+   ```
+
+3. **Запусти приложение в режиме разработки:**
    ```sh
    wails dev
+   ```
+
+   **Примечание:** Для постоянного добавления в PATH добавьте в `~/.zshrc`:
+   ```sh
+   echo 'export PATH=$PATH:$(go env GOPATH)/bin' >> ~/.zshrc
+   source ~/.zshrc
    ```
 
 ### Альтернативный способ (ручная сборка):
