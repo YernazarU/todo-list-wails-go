@@ -1,7 +1,34 @@
 To‑Do List (Go + React + TS)
 
-Как запустить
+## Как запустить
 
+### Простой способ (рекомендуется):
+1. **Установи Wails CLI:**
+   ```sh
+   go install github.com/wailsapp/wails/v2/cmd/wails@latest
+   ```
+
+2. **Запусти приложение в режиме разработки:**
+   ```sh
+   wails dev
+   ```
+
+### Альтернативный способ (ручная сборка):
+1. **Собери frontend:**
+   ```sh
+   cd frontend
+   npm install
+   npm run build
+   cd ..
+   ```
+
+2. **Собери и запусти приложение:**
+   ```sh
+   go build
+   ./wails-todo
+   ```
+
+### Для продакшена с PostgreSQL:
 1. **Запусти PostgreSQL (Docker):**
    ```sh
    docker run --name wails-todo-postgres -e POSTGRES_PASSWORD=todo123 -e POSTGRES_USER=todo -e POSTGRES_DB=wailstodo -p 5432:5432 -d postgres:16
@@ -10,29 +37,22 @@ To‑Do List (Go + React + TS)
    ```sh
    psql -h localhost -U todo -d wailstodo -f internal/repo/migrations.sql
    ```
-3. **Экспортируй переменную окружения:**
-   ```sh
-   export POSTGRES_DSN="postgres://todo:todo123@localhost:5432/wailstodo?sslmode=disable"
-   ```
-4. **Собери и запусти backend:**
-   ```sh
-   go build
-   ./wails-todo
-   ```
-5. **Запусти frontend:**
-   ```sh
-   cd frontend
-   npm install
-   npm run dev
-   ```
-   Открой http://localhost:5173
+3. **Измени app.go** - замени `NewMemoryTaskRepository()` на `NewPostgresTaskRepository(pool)`
 
 
-Что реализовано
+## Что реализовано
 
-- [x] Добавление, удаление, отметка задач
-- [x] Сохранение задач в PostgreSQL
-- [x] repo → service → usecase (чистая архитектура)
-- [x] Фильтрация и сортировка
-- [x] Всё работает после перезапуска
+### Основная функциональность:
+- [x] **Создание задач** - Пользователь может добавлять новые задачи в список
+- [x] **Отображение задач** - Все задачи отображаются на экране в разделе "Активные" и "Выполненные"
+- [x] **Удаление задач** - Пользователь может удалять задачи из списка с подтверждением
+- [x] **Отметка задач как выполненных** - Пользователь может отмечать задачи как выполненные, что приводит к изменению их отображения
+- [x] **Сохранение состояния** - Состояние задач сохраняется между запусками приложения (in-memory репозиторий)
+
+### Техническая реализация:
+- [x] **Clean Architecture** - repo → service → usecase (чистая архитектура)
+- [x] **Wails v2** - Современный фреймворк для десктопных приложений
+- [x] **React + TypeScript** - Современный фронтенд с типизацией
+- [x] **Потокобезопасность** - Использование мьютексов для безопасной работы с данными
+- [x] **Обработка ошибок** - Полная обработка ошибок с уведомлениями пользователю
 
